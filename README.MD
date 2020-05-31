@@ -16,4 +16,6 @@
 - create .env file with your info (check .env.example)
 - npm install in root and client folders
 - run docker-compose up
+- npm run migrate
+- npm run seed
 - npm run dev in root and npm run start in
