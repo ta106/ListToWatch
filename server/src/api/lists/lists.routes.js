@@ -1,20 +1,27 @@
 const express = require("express");
 
 const queries = require("./lists.queries");
-
+const ItemQueries = require("../items/items.queries");
 const router = express.Router();
 const isAuth = require("../../isAuth");
-router.get("/:id", isAuth, async (req, res, next) => {
-  const { id } = req.params;
+router.get("/:id?", isAuth, async (req, res, next) => {
+  let { id } = req.params;
   try {
-    // TODO: should we validate the ID?
-    const lists = await queries.get(parseInt(id, 10) || 0);
+    id = id ? id : req.payload.user_id;
+    let lists = await queries.get(id);
 
     if (lists) {
+      lists = await Promise.all(
+        lists.map(async (list) => {
+          let items = await ItemQueries.get(list.id);
+          return { ...list, items };
+        })
+      );
       return res.json(lists);
     }
     return next();
   } catch (error) {
+    console.log(error);
     return next(error);
   }
 });
@@ -46,7 +53,6 @@ router.put("/", isAuth, async (req, res, next) => {
     }
     return next();
   } catch (error) {
-    console.log(error);
     return next(error);
   }
 });
@@ -62,7 +68,7 @@ router.post("/", isAuth, async (req, res, next) => {
     }
     const updated = await queries.post(id, name);
     if (updated) {
-      return res.json(updated.id);
+      return res.json(updated);
     }
     return next();
   } catch (error) {

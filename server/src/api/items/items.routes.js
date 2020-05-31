@@ -36,13 +36,11 @@ router.put("/", isAuth, async (req, res, next) => {
 
   try {
     const item = await queries.put(name, img_url, imdbID, type_id);
-
     if (item) {
       return res.json(item.id);
     }
     return next();
   } catch (error) {
-    console.log(error);
     return next(error);
   }
 });
@@ -57,7 +55,6 @@ router.put("/inlist", isAuth, async (req, res, next) => {
       return next(new Error("Invalid user"));
     }
     const inserted = await queries.putList(item_id, list_id);
-    console.log(inserted);
     if (inserted) {
       return res.json("Added!");
     }
@@ -77,7 +74,6 @@ router.post("/rate", isAuth, async (req, res, next) => {
     }
     return next();
   } catch (error) {
-    console.log(error);
     return next(error);
   }
 });

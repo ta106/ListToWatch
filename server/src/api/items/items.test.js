@@ -1,7 +1,6 @@
 const supertest = require("supertest");
 const app = require("../../app");
 const auth = require("../../auth");
-const { verify } = require("jsonwebtoken");
 
 describe("GET /api/v1/items", () => {
   let token = auth.createAccessToken({ id: 1 });

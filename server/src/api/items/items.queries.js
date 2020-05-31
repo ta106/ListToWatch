@@ -35,16 +35,20 @@ module.exports = {
       await db(tableNames.list_item).insert({ item_id, list_id }).returning("*")
     )[0];
   },
-  async post(id, user_id, stars) {
-    db(tableNames.list_item)
-      .where({ id, user_id })
+  async post(item_id, user_id, stars) {
+    db(tableNames.rating)
+      .where({ item_id, user_id })
       .then(async (rows) => {
         if (rows.length == 0) {
-          await db(tableNames.list_item).insert({ id, user_id, rating: stars });
+          await db(tableNames.rating).insert({
+            item_id,
+            user_id,
+            stars,
+          });
         } else {
-          await db(tableNames.list_item)
-            .where({ id, user_id })
-            .update({ rating: stars });
+          await db(tableNames.rating)
+            .where({ item_id, user_id })
+            .update({ stars });
         }
       });
     return "Rated!";

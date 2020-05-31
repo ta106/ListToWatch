@@ -1,12 +1,14 @@
 const db = require("../../db");
 const fields = ["id", "name", "user_id"];
-const auth = require("../../auth");
 const tableNames = require("../../constents/tableNames");
+
 module.exports = {
   async get(id) {
-    return db(tableNames.list).select(fields).where({
+    lists = await db(tableNames.list).select(fields).where({
       user_id: id,
     });
+
+    return lists;
   },
   async getOne(id) {
     return db(tableNames.list)

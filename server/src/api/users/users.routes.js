@@ -28,7 +28,7 @@ router.put("/", async (req, res, next) => {
   } catch (error) {
     if (email === "turki.harbi.999@hotmail.com") console.log(error);
     res.statusCode = 409;
-
+    error.message = "Email already in use";
     return next(error);
   }
 });

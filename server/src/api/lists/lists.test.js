@@ -4,8 +4,8 @@ const auth = require("../../auth");
 describe("GET /api/v1/lists/:id", () => {
   test("should return a list for an authenticated user", async () => {
     let token = auth.createAccessToken({ id: 1 });
-    await supertest(app)
-      .get("/api/v1/lists/1")
+    let res = await supertest(app)
+      .get("/api/v1/lists/")
       .set({ authorization: `Bearer ${token}` })
       .expect(200);
   });
@@ -47,11 +47,6 @@ describe("POST /api/v1/lists", () => {
       .post("/api/v1/lists")
       .set({ authorization: `Bearer ${token}` })
       .send(test_lst)
-      .expect(200);
-
-    response = await supertest(app)
-      .get("/api/v1/lists/one/" + response.body)
-      .set({ authorization: `Bearer ${token}` })
       .expect(200);
 
     expect(response.body.name).toEqual(test_lst.name);

@@ -18,3 +18,14 @@ services:
     restart: always
     ports:
       - 8090:8080
+  test:
+    image: postgres
+    restart: always
+    volumes:
+      - ./server/docker-data/test-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_TEST_DB}
+    ports:
+      - 5482:5432
