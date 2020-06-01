@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetItem } from "../../redux/actions/imdbActions";
 import Modal from "react-modal";
+import { RemoveFromList, AddToList } from "../../redux/actions/listActions";
 Modal.setAppElement("#root");
 
 const customStyles = {
@@ -24,7 +25,7 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
       setActive(res);
     }
     getData();
-  }, [item, dispatch, imdbID, lists]);
+  }, [item, dispatch, imdbID]);
 
   function closeModal() {
     setIsOpen(false);
@@ -60,15 +61,26 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
           <div className="text-center">{item.Title}</div>
           {item.Plot}
           <h3>Playlists</h3>
-          <fieldset class="form-group">
-            <div class="form-check">
+          <fieldset className="form-group">
+            <div className="form-check">
               {lists.map((list) => {
+                console.log(list);
                 return (
-                  <label class="form-check-label">
+                  <label key={list.id} className="form-check-label">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="checkbox"
                       checked={list.items.some((i) => i.imdbID === imdbID)}
+                      onChange={async (e) => {
+                        (await list.items.some((i) => i.imdbID === imdbID))
+                          ? await dispatch(
+                              RemoveFromList({
+                                imdbID,
+                                list_id: list.id,
+                              })
+                            )
+                          : await dispatch(AddToList(item, list.id));
+                      }}
                     />
                     {list.name + "   "}
                   </label>

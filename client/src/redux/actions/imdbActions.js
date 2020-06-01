@@ -4,7 +4,6 @@ export const GetItem = (payload) => {
   return async (dispatch, getState) => {
     try {
       const result = await GetOMDBItem(payload, getState);
-      console.log(result);
       dispatch({
         type: types.ADD_IMDB_ITEM,
         payload: result,

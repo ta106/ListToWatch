@@ -37,7 +37,7 @@ module.exports = {
     const [created] = await db(tableNames.user)
       .insert({ name, email, password })
       .returning("*");
-      
+
     return auth.createAccessToken(created);
   },
 };

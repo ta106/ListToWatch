@@ -43,7 +43,7 @@ describe("PUT /api/v1/items/inlist", () => {
     res = await supertest(app)
       .put("/api/v1/items/inlist")
       .send({
-        item_id: response.body,
+        imdbID: response.body.imdbID,
         list_id: res.body,
       })
       .set({ authorization: `Bearer ${token}` })
@@ -52,12 +52,47 @@ describe("PUT /api/v1/items/inlist", () => {
   test("Should return 'Added!'  ", async () => {
     let { res, token } = await addList();
     let response = (await addItem()).res;
-
     res = await supertest(app)
       .put("/api/v1/items/inlist")
       .set({ authorization: `Bearer ${token}` })
       .send({
-        item_id: response.body,
+        imdbID: response.body.imdbID,
+        list_id: res.body,
+      })
+      .expect(200);
+  });
+});
+
+describe("post /api/v1/items/inlist", () => {
+  test("Should return 401 for modifying another user's record ", async () => {
+    let { res } = await addList();
+    let response = (await addItem()).res;
+    let token = auth.createAccessToken({ id: 2 });
+    res = await supertest(app)
+      .post("/api/v1/items/inlist")
+      .send({
+        imdbID: response.body.imdbID,
+        list_id: res.body,
+      })
+      .set({ authorization: `Bearer ${token}` })
+      .expect(401);
+  });
+  test("Should return 'Removed!'  ", async () => {
+    let { res, token } = await addList();
+    let response = (await addItem()).res;
+    await supertest(app)
+      .put("/api/v1/items/inlist")
+      .set({ authorization: `Bearer ${token}` })
+      .send({
+        imdbID: response.body.imdbID,
+        list_id: res.body,
+      })
+      .expect(200);
+    res = await supertest(app)
+      .post("/api/v1/items/inlist")
+      .set({ authorization: `Bearer ${token}` })
+      .send({
+        imdbID: response.body.imdbID,
         list_id: res.body,
       })
       .expect(200);
@@ -71,7 +106,7 @@ describe("POST /api/v1/items/rate", () => {
       .set({ authorization: `Bearer ${token}` })
 
       .send({
-        id: res.body,
+        id: res.body.id,
         stars: 4.5,
       })
       .expect(200);

@@ -7,9 +7,24 @@ export default (state = initialState, { type, payload }) => {
     case types.GET_LISTS:
       return payload;
     case types.UPDATE_LIST:
-      return state.map((ls) =>
-        ls.id === payload.id ? { ...ls, name: payload.name } : ls
-      );
+      return state.map((ls) => {
+        return ls.id === payload.id ? { ...ls, name: payload.name } : ls;
+      });
+    case types.ADD_ITEM_TO_LIST:
+      return state.map((ls) => {
+        return ls.id === payload.list_id
+          ? { ...ls, items: [...ls.items, payload.item] }
+          : ls;
+      });
+    case types.REMOVE_ITEM_FROM_LIST:
+      return state.map((ls) => {
+        return ls.id === payload.list_id
+          ? {
+              ...ls,
+              items: ls.items.filter((i) => i.imdbID !== payload.imdbID),
+            }
+          : ls;
+      });
     default:
       return state;
   }

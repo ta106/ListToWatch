@@ -70,3 +70,47 @@ export const UpdateUserList = async (payload, getState) => {
   });
   return res.data;
 };
+
+export const AddItemToList = async (payload, list_id, getState) => {
+  const token = getState().session.token;
+  let item = {
+    imdbID: payload.imdbID,
+    name: payload.Title,
+    img_url: payload.Poster,
+    type_id:
+      payload.Type === "movie"
+        ? 1
+        : payload.Genre.includes("Animation") &
+          payload.Language.includes("Japanese")
+        ? 3
+        : 2,
+  };
+  const res = await axios.put(API_URL + "/items", item, {
+    headers: {
+      authorization: "Bearer " + token,
+    },
+  });
+  await axios.put(
+    API_URL + "items/inlist",
+    {
+      imdbID: payload.imdbID,
+      list_id,
+    },
+    {
+      headers: {
+        authorization: "Bearer " + token,
+      },
+    }
+  );
+  return res.data;
+};
+
+export const RemoveItemFromList = async (payload, getState) => {
+  const state = getState();
+  const token = state.session.token;
+  await axios.post(API_URL + "items/inlist", payload, {
+    headers: {
+      authorization: "Bearer " + token,
+    },
+  });
+};

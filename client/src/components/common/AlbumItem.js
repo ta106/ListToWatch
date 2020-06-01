@@ -2,7 +2,7 @@ import React from "react";
 
 export default function AlbumItem({ id, name, img, children }) {
   return (
-    <div key={id} className="col-md-2">
+    <div key={id || name} className="col-md-2">
       <div className="card mb-4 shadow-sm">
         {img && img !== "N/A" ? (
           <img src={img} width="100%" height="175" alt={name} />

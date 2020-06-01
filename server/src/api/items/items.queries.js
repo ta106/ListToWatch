@@ -4,6 +4,9 @@ const tableNames = require("../../constents/tableNames");
 const fields = ["id", "name", "img_url", "imdbID"];
 
 module.exports = {
+  async find(imdbID) {
+    return db(tableNames.item).select(fields).where({ imdbID }).first();
+  },
   async get(id) {
     ids = await db(tableNames.list_item).select(["item_id"]).where({
       list_id: id,
@@ -30,9 +33,20 @@ module.exports = {
         .returning("*")
     )[0];
   },
-  async putList(item_id, list_id) {
+  async putList(imdbID, list_id) {
+    const item_id = (await this.find(imdbID)).id;
+
     return (
       await db(tableNames.list_item).insert({ item_id, list_id }).returning("*")
+    )[0];
+  },
+  async removeList(imdbID, list_id) {
+    const item_id = (await this.find(imdbID)).id;
+    return (
+      await db(tableNames.list_item)
+        .where({ item_id, list_id })
+        .del()
+        .returning("*")
     )[0];
   },
   async post(item_id, user_id, stars) {

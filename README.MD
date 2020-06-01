@@ -7,9 +7,14 @@
 - [x] simple fron-end
 - [x] connect to IMDB
 - [ ] Add lists
-- [ ] Add items to list
+- [x] Add items to list
 - [ ] Search other users
 - [ ] Logout
+
+## Back-end
+
+- [ ] Refresh Token
+- [ ] Invoke Token
 
 ## Install
 

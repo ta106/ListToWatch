@@ -35,9 +35,13 @@ router.put("/", isAuth, async (req, res, next) => {
   const { name, img_url, imdbID, type_id } = req.body;
 
   try {
-    const item = await queries.put(name, img_url, imdbID, type_id);
+    let item = await queries.find(imdbID);
     if (item) {
-      return res.json(item.id);
+      return res.json(item);
+    }
+    item = await queries.put(name, img_url, imdbID, type_id);
+    if (item) {
+      return res.json(item);
     }
     return next();
   } catch (error) {
@@ -45,22 +49,40 @@ router.put("/", isAuth, async (req, res, next) => {
   }
 });
 router.put("/inlist", isAuth, async (req, res, next) => {
-  const { item_id, list_id } = req.body;
-
+  const { imdbID, list_id } = req.body;
   try {
     const list = await listQueries.getOne(list_id);
 
     if (req.payload.user_id != list.user_id) {
       res.statusCode = 401;
-      return next(new Error("Invalid user"));
+      throw new Error("Invalid user");
     }
-    const inserted = await queries.putList(item_id, list_id);
+    const inserted = await queries.putList(imdbID, list_id);
     if (inserted) {
       return res.json("Added!");
     }
     return next();
   } catch (error) {
-    console.log(error);
+    return next(error);
+  }
+});
+router.post("/inlist", isAuth, async (req, res, next) => {
+  const { imdbID, list_id } = req.body;
+
+  try {
+    const list = await listQueries.getOne(list_id);
+    if (req.payload.user_id != list.user_id) {
+      res.statusCode = 401;
+
+      throw new Error("Invalid user");
+    }
+
+    const removed = await queries.removeList(imdbID, list_id);
+    if (removed) {
+      return res.json("Removed!");
+    }
+    return next();
+  } catch (error) {
     return next(error);
   }
 });
