@@ -13,7 +13,8 @@ router.get("/:id?", isAuth, async (req, res, next) => {
     if (lists) {
       lists = await Promise.all(
         lists.map(async (list) => {
-          let items = await ItemQueries.get(list.id);
+          let items = await ItemQueries.get(list.id, req.payload.user_id);
+          items;
           return { ...list, items };
         })
       );
@@ -40,13 +41,10 @@ router.get("/one/:id", isAuth, async (req, res, next) => {
   }
 });
 router.put("/", isAuth, async (req, res, next) => {
-  const { user_id, name } = req.body;
-  if (req.payload.user_id != user_id) {
-    res.statusCode = 401;
-    return next(new Error("Invalid user"));
-  }
+  const { name } = req.body;
+
   try {
-    const list = await queries.put(name, user_id);
+    const list = await queries.put(name, req.payload.user_id);
 
     if (list) {
       return res.json(list[0].id);
@@ -91,6 +89,7 @@ router.delete("/:id", isAuth, async (req, res, next) => {
     }
     return next();
   } catch (error) {
+    console.log(error);
     return next(error);
   }
 });

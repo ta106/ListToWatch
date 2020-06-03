@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Login from "./components/Login";
 import "bootswatch/dist/sketchy/bootstrap.css";
-
 import { Header } from "./components/common/Header";
 import authGaurd from "./authGaurd";
 import Dashboard from "./components/Dashboard";

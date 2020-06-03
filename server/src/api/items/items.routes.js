@@ -7,13 +7,14 @@ const isAuth = require("../../isAuth");
 router.get("/:id", isAuth, async (req, res, next) => {
   const { id } = req.params;
   try {
-    const lists = await queries.get(parseInt(id, 10) || 0);
+    const lists = await queries.get(parseInt(id, 10) || 0, req.payload.user_id);
 
     if (lists) {
       return res.json(lists);
     }
     return next();
   } catch (error) {
+    console.log(error);
     return next(error);
   }
 });

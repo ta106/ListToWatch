@@ -25,6 +25,10 @@ export default (state = initialState, { type, payload }) => {
             }
           : ls;
       });
+    case types.ADD_LIST:
+      return [...state, payload];
+    case types.REMOVE_LIST:
+      return state.filter((lst) => lst.id !== payload);
     default:
       return state;
   }

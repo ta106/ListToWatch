@@ -56,7 +56,7 @@ exports.up = async (knex) => {
     }),
     await knex.schema.createTable(tableNames.list_item, (table) => {
       references(table, tableNames.item);
-      references(table, tableNames.list);
+      references(table, tableNames.list, true, "", "cascade");
       table.primary(["item_id", "list_id"]);
     }),
     await knex.schema.createTable(tableNames.rating, (table) => {

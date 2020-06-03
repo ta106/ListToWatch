@@ -6,8 +6,9 @@
 - [x] setup redux
 - [x] simple fron-end
 - [x] connect to IMDB
-- [ ] Add lists
+- [x] Add/Remove lists
 - [x] Add items to list
+- [x] Rate Items
 - [ ] Search other users
 - [ ] Logout
 

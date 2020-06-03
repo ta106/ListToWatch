@@ -7,24 +7,34 @@ module.exports = {
   async find(imdbID) {
     return db(tableNames.item).select(fields).where({ imdbID }).first();
   },
-  async get(id) {
+  async get(id, user_id) {
     ids = await db(tableNames.list_item).select(["item_id"]).where({
       list_id: id,
     });
     res = await Promise.all(
       ids.map(async (id) => {
-        return this.getOne(id.item_id);
+        return this.getOne(id.item_id, user_id);
       })
     );
     return res;
   },
-  async getOne(id) {
-    return db(tableNames.item)
+  async getOne(id, user_id) {
+    let item = await db(tableNames.item)
       .select(fields)
       .where({
         id,
       })
       .first();
+    let stars = await db(tableNames.item)
+      .select("stars")
+      .join(tableNames.rating, { "rating.item_id": "item.id" })
+      .where({
+        id,
+        user_id,
+      })
+      .first();
+    stars ? (item.stars = stars.stars) : null;
+    return item;
   },
   async put(name, img_url, imdbID, type_id) {
     return (

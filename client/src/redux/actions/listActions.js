@@ -4,6 +4,8 @@ import {
   UpdateUserList,
   AddItemToList,
   RemoveItemFromList,
+  AddUserList,
+  RemoveUserList,
 } from "./api";
 export const GetLists = () => {
   return async (dispatch, getState) => {
@@ -18,7 +20,34 @@ export const GetLists = () => {
     }
   };
 };
-
+export const AddList = (payload) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await AddUserList(payload, getState);
+      dispatch({
+        type: types.ADD_LIST,
+        payload: { id: res, name: payload.name, items: [] },
+      });
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+export const RemoveList = (payload) => {
+  return async (dispatch, getState) => {
+    try {
+      const res = await RemoveUserList(payload, getState);
+      dispatch({
+        type: types.REMOVE_LIST,
+        payload,
+      });
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
 export const UpdateList = (payload) => {
   return async (dispatch, getState) => {
     try {

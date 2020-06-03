@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetItem } from "../../redux/actions/imdbActions";
+import { GetItem, RateItem } from "../../redux/actions/imdbActions";
 import Modal from "react-modal";
-import { RemoveFromList, AddToList } from "../../redux/actions/listActions";
+import {
+  RemoveFromList,
+  AddToList,
+  AddList,
+} from "../../redux/actions/listActions";
+import Rating from "react-rating";
+
 Modal.setAppElement("#root");
 
 const customStyles = {
@@ -19,9 +25,11 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
   const dispatch = useDispatch();
   const [item, setActive] = useState();
   const lists = useSelector((state) => state.lists);
+  const [listName, setName] = useState();
   useEffect(() => {
     async function getData() {
-      const res = await dispatch(GetItem(imdbID));
+      let res = await dispatch(GetItem(imdbID));
+
       setActive(res);
     }
     getData();
@@ -29,6 +37,12 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
 
   function closeModal() {
     setIsOpen(false);
+  }
+  async function rate(e) {
+    let newItm = { ...item, stars: e };
+
+    await dispatch(RateItem(newItm));
+    setActive(newItm);
   }
   return !item ? (
     <> </>
@@ -53,6 +67,23 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
                   src={item.Poster}
                   alt={item.Title}
                 />
+                <div>
+                  <h4>
+                    <span style={{ color: "#E8C547" }}>
+                      <strong>IMDB</strong>
+                    </span>
+                    Rating : {item.imdbRating} / 10
+                  </h4>
+
+                  {item.stars ? <h4>Your Rating</h4> : <h4>Rate?</h4>}
+                  <Rating
+                    emptySymbol="fa fa-star-o fa-2x"
+                    fullSymbol="fa fa-star fa-2x"
+                    fractions={2}
+                    initialRating={item.stars}
+                    onClick={rate}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -64,9 +95,8 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
           <fieldset className="form-group">
             <div className="form-check">
               {lists.map((list) => {
-                console.log(list);
                 return (
-                  <label key={list.id} className="form-check-label">
+                  <label key={list.id} className="form-check-label m-1">
                     <input
                       className="form-check-input"
                       type="checkbox"
@@ -82,10 +112,32 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
                           : await dispatch(AddToList(item, list.id));
                       }}
                     />
-                    {list.name + "   "}
+                    {list.name}
                   </label>
                 );
               })}
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  let id = await dispatch(
+                    AddList({
+                      name: listName,
+                    })
+                  );
+                  await dispatch(AddToList(item, id));
+                  setName("");
+                }}
+              >
+                <div className="form-group">
+                  <input
+                    type="text"
+                    placeholder="New list?"
+                    value={listName}
+                    onChange={(e) => setName(e.target.value)}
+                    className="form-control"
+                  ></input>
+                </div>
+              </form>
             </div>
           </fieldset>
         </div>

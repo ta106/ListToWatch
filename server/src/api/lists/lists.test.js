@@ -21,14 +21,7 @@ describe("PUT /api/v1/lists", () => {
   test("should return id of created list", async () => {
     await addList();
   });
-  test("should return 401 for adding a list to another user", async () => {
-    let token = auth.createAccessToken({ id: 1 });
-    let res = await supertest(app)
-      .put("/api/v1/lists/")
-      .set({ authorization: `Bearer ${token}` })
-      .send({ name: "seead list", user_id: 2 })
-      .expect(401);
-  });
+
   test("should return 403 for adding a list by an unauthenticated user", async () => {
     let res = await supertest(app)
       .put("/api/v1/lists/")

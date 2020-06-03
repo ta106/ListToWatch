@@ -23,7 +23,11 @@ export default function Search() {
         </div>
       </form>
       {searchList ? (
-        <ItemsAlbum list={searchList}></ItemsAlbum>
+        <ItemsAlbum
+          list={searchList}
+          action="Add"
+          className="btn btn-sm btn-outline-primary "
+        ></ItemsAlbum>
       ) : (
         <h2>No Results</h2>
       )}

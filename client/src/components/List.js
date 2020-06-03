@@ -11,7 +11,11 @@ const List = () => {
   return (
     <>
       <h1>{list.name}</h1>
-      <ItemsAlbum list={list.items}></ItemsAlbum>
+      <ItemsAlbum
+        list={list.items}
+        className="btn btn-sm btn-outline-secondary"
+        action="View"
+      ></ItemsAlbum>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { GetOMDBItem, SearchOMDB } from "./api";
+import { GetOMDBItem, SearchOMDB, RateUserItem } from "./api";
 export const GetItem = (payload) => {
   return async (dispatch, getState) => {
     try {
@@ -9,6 +9,19 @@ export const GetItem = (payload) => {
         payload: result,
       });
       return result;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+export const RateItem = (payload) => {
+  return async (dispatch, getState) => {
+    try {
+      await RateUserItem(payload, getState);
+      dispatch({
+        type: types.RATE_ITEM,
+        payload,
+      });
     } catch (err) {
       console.log(err);
     }

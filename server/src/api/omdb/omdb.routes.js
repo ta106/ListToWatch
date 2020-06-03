@@ -6,7 +6,7 @@ const isAuth = require("../../isAuth");
 router.get("/:id", isAuth, async (req, res, next) => {
   let { id } = req.params;
   try {
-    let imdbItem = await queries.get(id);
+    let imdbItem = await queries.get(id, req.payload.user_id);
 
     if (imdbItem) {
       return res.json(imdbItem);

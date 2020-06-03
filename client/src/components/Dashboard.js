@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { UpdateList } from "../redux/actions/listActions";
+import { UpdateList, RemoveList } from "../redux/actions/listActions";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
 import Album from "./common/Album";
@@ -32,6 +32,7 @@ export const Dashboard = () => {
   return (
     <>
       <h1>Your Playlists</h1>
+
       <Album
         key={1}
         imgs={lists.map((list) => {
@@ -40,9 +41,9 @@ export const Dashboard = () => {
             id: list.id,
             img_url: list.items.length > 0 ? list.items[0].img_url : "",
             children: (
-              <div className="btn-group">
+              <div className="d-inline-flex">
                 <Link
-                  className="btn btn-sm btn-outline-secondary"
+                  className="btn  btn-outline-secondary"
                   to={"/list/" + list.id}
                 >
                   View
@@ -50,12 +51,21 @@ export const Dashboard = () => {
 
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-secondary "
+                  className="btn  btn-outline-secondary "
                   onClick={() => {
                     openModal(list.id, list.name);
                   }}
                 >
                   Rename
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-danger "
+                  onClick={() => {
+                    dispatch(RemoveList(list.id));
+                  }}
+                >
+                  Delete
                 </button>
               </div>
             ),

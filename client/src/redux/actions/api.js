@@ -48,7 +48,28 @@ export const SearchOMDB = async (search, page, getState) => {
   );
   return res.data;
 };
+export const AddUserList = async (payload, getState) => {
+  const state = getState();
+  const token = state.session.token;
 
+  const res = await axios.put(API_URL + "lists/", payload, {
+    headers: {
+      authorization: "Bearer " + token,
+    },
+  });
+  return res.data;
+};
+export const RemoveUserList = async (payload, getState) => {
+  const state = getState();
+  const token = state.session.token;
+
+  const res = await axios.delete(API_URL + "lists/" + payload, {
+    headers: {
+      authorization: "Bearer " + token,
+    },
+  });
+  return res.data;
+};
 export const GetUserLists = async (getState) => {
   const state = getState();
   const token = state.session.token;
@@ -70,8 +91,7 @@ export const UpdateUserList = async (payload, getState) => {
   });
   return res.data;
 };
-
-export const AddItemToList = async (payload, list_id, getState) => {
+export const AddItem = async (payload, getState) => {
   const token = getState().session.token;
   let item = {
     imdbID: payload.imdbID,
@@ -90,6 +110,12 @@ export const AddItemToList = async (payload, list_id, getState) => {
       authorization: "Bearer " + token,
     },
   });
+  return res;
+};
+
+export const AddItemToList = async (payload, list_id, getState) => {
+  const token = getState().session.token;
+  const res = await AddItem(payload, getState);
   await axios.put(
     API_URL + "items/inlist",
     {
@@ -113,4 +139,22 @@ export const RemoveItemFromList = async (payload, getState) => {
       authorization: "Bearer " + token,
     },
   });
+};
+
+export const RateUserItem = async (payload, getState) => {
+  const state = getState();
+  const token = state.session.token;
+  const dbItm = await AddItem(payload, getState);
+  return axios.post(
+    API_URL + "items/rate",
+    {
+      stars: payload.stars,
+      id: dbItm.id,
+    },
+    {
+      headers: {
+        authorization: "Bearer " + token,
+      },
+    }
+  );
 };

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Album from "./Album";
 import ItemDetails from "./ItemDetails";
 
-export default function ItemsAlbum({ list }) {
+export default function ItemsAlbum({ list, action, className }) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [imdbID, setImdbID] = useState(-1);
   return (
@@ -18,13 +18,13 @@ export default function ItemsAlbum({ list }) {
               <div className="btn-group">
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-secondary "
+                  className={className}
                   onClick={() => {
                     setImdbID(item.imdbID);
                     setIsOpen(true);
                   }}
                 >
-                  View
+                  {action}
                 </button>
               </div>
             ),
