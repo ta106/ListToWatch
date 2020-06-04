@@ -16,7 +16,7 @@ export default function AlbumItem({ id, name, img, children }) {
           />
         )}
 
-        <div className="card-body">
+        <div className="card-body ">
           <p className="card-text">{name}</p>
           {children}
           <div className="d-flex justify-content-between align-items-center">

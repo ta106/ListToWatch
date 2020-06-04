@@ -41,9 +41,9 @@ export const Dashboard = () => {
             id: list.id,
             img_url: list.items.length > 0 ? list.items[0].img_url : "",
             children: (
-              <div className="d-inline-flex">
+              <div className="btn-group">
                 <Link
-                  className="btn  btn-outline-secondary"
+                  className="btn btn-sm  btn-outline-secondary"
                   to={"/list/" + list.id}
                 >
                   View
@@ -51,7 +51,7 @@ export const Dashboard = () => {
 
                 <button
                   type="button"
-                  className="btn  btn-outline-secondary "
+                  className="btn btn-sm  btn-outline-secondary "
                   onClick={() => {
                     openModal(list.id, list.name);
                   }}
@@ -60,7 +60,7 @@ export const Dashboard = () => {
                 </button>
                 <button
                   type="button"
-                  className="btn btn-outline-danger "
+                  className="btn btn-sm btn-outline-danger "
                   onClick={() => {
                     dispatch(RemoveList(list.id));
                   }}

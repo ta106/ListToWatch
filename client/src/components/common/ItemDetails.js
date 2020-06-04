@@ -72,7 +72,7 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
                     <span style={{ color: "#E8C547" }}>
                       <strong>IMDB</strong>
                     </span>
-                    Rating : {item.imdbRating} / 10
+                    Rating {item.imdbRating} / 10
                   </h4>
 
                   {item.stars ? <h4>Your Rating</h4> : <h4>Rate?</h4>}
@@ -96,9 +96,9 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
             <div className="form-check">
               {lists.map((list) => {
                 return (
-                  <label key={list.id} className="form-check-label m-1">
+                  <label key={list.id} className="form-check-label mr-4">
                     <input
-                      className="form-check-input"
+                      className="form-check-input "
                       type="checkbox"
                       checked={list.items.some((i) => i.imdbID === imdbID)}
                       onChange={async (e) => {
@@ -116,30 +116,30 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
                   </label>
                 );
               })}
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  let id = await dispatch(
-                    AddList({
-                      name: listName,
-                    })
-                  );
-                  await dispatch(AddToList(item, id));
-                  setName("");
-                }}
-              >
-                <div className="form-group">
-                  <input
-                    type="text"
-                    placeholder="New list?"
-                    value={listName}
-                    onChange={(e) => setName(e.target.value)}
-                    className="form-control"
-                  ></input>
-                </div>
-              </form>
             </div>
           </fieldset>
+
+          <form
+            className="mr-0 form-group"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              let id = await dispatch(
+                AddList({
+                  name: listName,
+                })
+              );
+              await dispatch(AddToList(item, id));
+              setName("");
+            }}
+          >
+            <input
+              type="text"
+              placeholder="New list?"
+              value={listName}
+              onChange={(e) => setName(e.target.value)}
+              className="form-control mr-0"
+            ></input>
+          </form>
         </div>
       </div>
 
