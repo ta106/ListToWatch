@@ -89,7 +89,9 @@ export default function ItemDetails({ imdbID, modalIsOpen, setIsOpen }) {
           </div>
         </div>
         <div className="col-lg-7" style={{ width: "100px" }}>
-          <div className="text-center">{item.Title}</div>
+          <div className="text-center">
+            <h4>{item.Title}</h4>
+          </div>
           {item.Plot}
           <h3>Playlists</h3>
           <fieldset className="form-group">

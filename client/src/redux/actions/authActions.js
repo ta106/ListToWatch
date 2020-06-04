@@ -37,6 +37,13 @@ export const SignUp = (payload) => {
     }
   };
 };
+export const SignOut = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: types.LOGOUT,
+    });
+  };
+};
 async function Auth(dispatch, result) {
   await dispatch({
     type: types.AUTH_LOGIN,

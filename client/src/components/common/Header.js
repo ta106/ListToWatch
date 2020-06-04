@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { SignOut } from "../../redux/actions/authActions";
 
 export const Header = () => {
   const isAuth = useSelector((state) => state.session.isAuth);
-
+  const dispatch = useDispatch();
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <Link className="navbar-brand" to="/">
@@ -37,7 +38,11 @@ export const Header = () => {
         {isAuth && (
           <ul className="navbar-nav ">
             <li className="nav-item">
-              <Link className="nav-link" to="/Logout">
+              <Link
+                className="nav-link"
+                to="/"
+                onClick={(e) => dispatch(SignOut())}
+              >
                 Logout
               </Link>
             </li>

@@ -11,7 +11,8 @@ export default (state = initialState, { type, payload }) => {
     case types.AUTH_LOGIN:
     case types.AUTH_FAIL:
       return { ...state, ...payload };
-
+    case types.LOGOUT:
+      return initialState;
     default:
       return state;
   }
