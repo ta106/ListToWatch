@@ -5,6 +5,7 @@ export default function Album({ imgs }) {
   return (
     <div className="container">
       <div className="row">
+        
         {imgs.map((img) => {
           return (
             <AlbumItem
