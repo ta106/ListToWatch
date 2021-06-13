@@ -1,14 +1,14 @@
 # An app to build lists from imdb and share with your friends!
 
-## Front-end 
+## Front-end
 
-- [X] setup react
-- [X] setup redux
-- [X] simple fron-end
-- [X] connect to IMDB
-- [X] Add/Remove lists
-- [X] Add items to list
-- [X] Rate Items
+- [x] setup react
+- [x] setup redux
+- [x] simple fron-end
+- [x] connect to IMDB
+- [x] Add/Remove lists
+- [x] Add items to list
+- [x] Rate Items
 - [ ] Search other users
 - [ ] Logout
 
