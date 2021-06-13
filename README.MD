@@ -1,4 +1,4 @@
-# An app to build lists from imdb and share with your friends!
+# An app to build lists from imdb and share with your friends!!
 
 ## Front-end
 
