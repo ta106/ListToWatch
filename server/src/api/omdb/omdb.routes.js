@@ -17,6 +17,7 @@ router.get("/:id", isAuth, async (req, res, next) => {
     return next(error);
   }
 });
+
 router.post("/", isAuth, async (req, res, next) => {
   const { search, page } = req.body;
   try {
